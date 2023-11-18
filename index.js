@@ -15,7 +15,7 @@ config({
 
 const app = express();
 
-console.log(process.env.FRONT_URL);
+console.log("FRONT URL ", process.env.FRONT_URL);
 
 app.use(cors({
     origin: [process.env.FRONT_URL],
@@ -35,6 +35,8 @@ app.use(tournamentRoutes);
 //DB Connection
 ConnectDB();
 
+
+// console.log("node enc", process.env.NODE_ENV);
 app.get('/isLoggedIn', (req, res) => {
 
     console.log(req.cookies);

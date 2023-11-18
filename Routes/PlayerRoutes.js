@@ -4,6 +4,9 @@ import { PlayerModel } from '../Database/Models/Models.js';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';
 
+// console.log("node enc", process.env.NODE_ENV);
+// console.log("con", process.env.NODE_ENV === 'Development' ? 'true' : 'false');
+
 export const playerRoutes = expres.Router();
 
 playerRoutes.get('/', (req, res) => {
@@ -42,7 +45,6 @@ playerRoutes.post('/playerRegister', async (req, res) => {
                 })
                 .json({
                     success: true,
-                    isOrganiser: false,
                     message: "PLayer Registered Successfully",
                     createdPlayer
                 })
@@ -64,7 +66,6 @@ playerRoutes.post('/playerLogin', async (req, res) => {
                 message: "Player already loggedin"
             })
         }
-
 
         const { email, password } = req.body;
 
@@ -89,7 +90,7 @@ playerRoutes.post('/playerLogin', async (req, res) => {
                     maxAge: 10 * 60 * 1000,
                     httpOnly: true,
                     sameSite: 'none',
-                    secure: true,
+                    secure: false,
                 }).json({
                     success: true,
                     message: "Player Logged In Successfully",
@@ -134,11 +135,21 @@ playerRoutes.get('/myProfile', async (req, res) => {
 playerRoutes.get('/playerLogout', (req, res) => {
     const token = req.cookies.paaiTokenPlayer;
 
+    if (!req.cookies.paaiTokenPlayer) {
+        res.json({
+            success: false,
+            message: "Player Not Logged In Please logins"
+        })
+    }
+    else {
+        res.cookie("paaiTokenPlayer", null, {
+            expires: new Date(Date.now()),
+            sameSite: "none",
+            secure: true,
+        }).json({
+            success: true,
+            message: "Player Logged Out Successfully",
+        })
+    }
 
-    res.cookie("paaiTokenPlayer", null, {
-        expires: new Date(Date.now()),
-    }).json({
-        success: true,
-        message: "Player Logged Out Successfully",
-    })
 });
