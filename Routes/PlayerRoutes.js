@@ -90,7 +90,7 @@ playerRoutes.post('/playerLogin', async (req, res) => {
                     maxAge: 10 * 60 * 1000,
                     httpOnly: true,
                     sameSite: 'none',
-                    secure: false,
+                    secure: true,
                 }).json({
                     success: true,
                     message: "Player Logged In Successfully",
@@ -151,5 +151,4 @@ playerRoutes.get('/playerLogout', (req, res) => {
             message: "Player Logged Out Successfully",
         })
     }
-
 });
