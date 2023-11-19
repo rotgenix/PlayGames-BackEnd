@@ -114,7 +114,7 @@ playerRoutes.get('/myProfile', async (req, res) => {
     if (!req.cookies.paaiTokenPlayer) {
         res.json({
             success: false,
-            message: "Player Not Logged In Please Login",
+            message: "Player Not Logged In Please Login new wala",
             token
         });
     }
@@ -123,7 +123,7 @@ playerRoutes.get('/myProfile', async (req, res) => {
         const playerData = await PlayerModel.findOne({ _id: playerID })
         res.json({
             success: true,
-            message: "Player Profile",
+            message: "Player Profile new wala",
             playerData,
             token
         });
