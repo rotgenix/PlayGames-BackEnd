@@ -7,9 +7,21 @@ import jwt from 'jsonwebtoken';
 export const playerRoutes = expres.Router();
 
 playerRoutes.get('/', (req, res) => {
-    res.json({
-        message: "User",
-    })
+    const token = req.cookies.paaiTokenPlayer;
+    console.log("token", token);
+    if (token) {
+        res.json({
+            message: "User",
+            tokenis: true,
+        })
+    }
+    else {
+        res.json({
+            message: "User",
+            tokenis: false,
+        })
+    }
+
 });
 
 playerRoutes.post('/playerRegister', async (req, res) => {
