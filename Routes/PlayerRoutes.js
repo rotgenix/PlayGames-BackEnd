@@ -115,7 +115,8 @@ playerRoutes.post('/playerLogin', async (req, res) => {
 
 playerRoutes.get('/myProfile', async (req, res) => {
     const token = req.cookies.paaiTokenPlayer;
-    if (!token) {
+    console.log(token)
+    if (!req.cookies.paaiTokenPlayer) {
         res.json({
             success: false,
             message: "Player Not Logged In Please Login",
@@ -138,7 +139,7 @@ playerRoutes.get('/playerLogout', (req, res) => {
     if (!req.cookies.paaiTokenPlayer) {
         res.json({
             success: false,
-            message: "Player Not Logged In Please logins"
+            message: "Player Not Logged In Please login"
         })
     }
     else {
