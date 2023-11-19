@@ -110,9 +110,11 @@ playerRoutes.post('/playerLogin', async (req, res) => {
                     httpOnly: true,
                     sameSite: 'none',
                     secure: true,
+                    
                 }).json({
                     success: true,
                     message: "Player Logged In Successfully",
+                    findPlayer
                 })
             }
             else {
@@ -132,12 +134,15 @@ playerRoutes.post('/playerLogin', async (req, res) => {
 
 playerRoutes.get('/myProfile', async (req, res) => {
     try {
+
+
         if (!req.cookies.paaiTokenPlayer) {
             const token = req.cookies.paaiTokenPlayer;
             console.log("token", token);
             res.json({
                 success: false,
-                message: "Player Not Logged In Please Login",
+                message: "Player Not Logged In Please Login new wala",
+                token
             });
         }
         else {
@@ -147,6 +152,7 @@ playerRoutes.get('/myProfile', async (req, res) => {
                 success: true,
                 message: "Player Profile",
                 playerData,
+                token
             });
         }
     } catch (error) {
