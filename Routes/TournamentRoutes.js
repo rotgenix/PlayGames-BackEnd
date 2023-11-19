@@ -1,5 +1,5 @@
 import expres from 'express'
-import { TournamentModel } from '../Database/Models/Models.js';
+import { PlayerModel, TournamentModel } from '../Database/Models/Models.js';
 
 export const tournamentRoutes = expres.Router();
 
@@ -97,15 +97,35 @@ tournamentRoutes.get('/getAllTournaments', async (req, res) => {
 
 tournamentRoutes.post('/tournamentregister/:tournamentID', async (req, res) => {
     try {
-        console.log("reg for tou");
-        const data = req.body;
+
+        const { teamName,
+            teamNumber,
+            teamEmail,
+            noOfPlayers,
+            playerID } = req.body;
         const { tournamentID } = req.params;
 
+        const data = {
+            teamName,
+            teamNumber,
+            teamEmail,
+            noOfPlayers,
+        }
+
+        //Upddating participated team in tournament 
         const teamAdded = await TournamentModel.updateOne({ _id: tournamentID }, {
             $push: {
                 participatingTeams: data
             }
         });
+
+        //Adding tournament in player profile
+        let playerData = await PlayerModel.updateOne({ _id: playerID }, {
+            $push: {
+                participatedTournaments: tournamentID
+            }
+        });
+
 
         let tournamentData = await TournamentModel.findById(tournamentID);
 
