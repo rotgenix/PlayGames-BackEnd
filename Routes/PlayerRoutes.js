@@ -115,7 +115,7 @@ playerRoutes.post('/playerLogin', async (req, res) => {
 
 playerRoutes.get('/myProfile', async (req, res) => {
     const token = req.cookies.paaiTokenPlayer;
-    console.log(token)
+    console.log("token", token)
     //changed here
     if (!req.cookies.paaiTokenPlayer) {
         res.json({
