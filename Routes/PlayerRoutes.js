@@ -108,25 +108,32 @@ playerRoutes.post('/playerLogin', async (req, res) => {
 });
 
 playerRoutes.get('/myProfile', async (req, res) => {
-    const token = req.cookies.paaiTokenPlayer;
-    console.log("token", token);
+    try {
+        const token = req.cookies.paaiTokenPlayer;
+        console.log("token", token);
 
-    if (!req.cookies.paaiTokenPlayer) {
+        if (!req.cookies.paaiTokenPlayer) {
+            res.json({
+                success: false,
+                message: "Player Not Logged In Please Login new wala",
+                token
+            });
+        }
+        else {
+            const playerID = jwt.verify(token, process.env.JWT_SECRET);
+            const playerData = await PlayerModel.findOne({ _id: playerID })
+            res.json({
+                success: true,
+                message: "Player Profile new wala",
+                playerData,
+                token
+            });
+        }
+    } catch (error) {
         res.json({
             success: false,
-            message: "Player Not Logged In Please Login new wala",
-            token
-        });
-    }
-    else {
-        const playerID = jwt.verify(token, process.env.JWT_SECRET);
-        const playerData = await PlayerModel.findOne({ _id: playerID })
-        res.json({
-            success: true,
-            message: "Player Profile new wala",
-            playerData,
-            token
-        });
+            message: "Server error while fetching profile"
+        })
     }
 });
 
