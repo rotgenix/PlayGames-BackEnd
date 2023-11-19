@@ -7,15 +7,18 @@ import jwt from 'jsonwebtoken';
 export const playerRoutes = expres.Router();
 
 // console.log("node enc", process.env.NODE_ENV);
-playerRoutes.get('/isLoggedIn', (req, res) => {
+playerRoutes.get('/isLoggedIn', async (req, res) => {
 
     try {
+
         if (req.cookies.paaiTokenPlayer) {
-            console.log(req.cookies);
-            console.log("/isLoggedIn", req.cookies);
+
+            const { _id } = jwt.verify(req.cookies.paaiTokenPlayer, process.env.JWT_SECRET);
+
             res.json({
                 success: true,
                 message: "Logged In as Player",
+                playerID: _id,
             });
         }
         else {
@@ -55,6 +58,8 @@ playerRoutes.post('/playerRegister', async (req, res) => {
 
             const paaiTokenPlayer = jwt.sign({ _id: createdPlayer._id }, process.env.JWT_SECRET);
 
+
+            // console.log("createdPlayer")
             res
                 .cookie("paaiTokenPlayer", paaiTokenPlayer, {
                     maxAge: 10 * 60 * 1000,
@@ -110,7 +115,7 @@ playerRoutes.post('/playerLogin', async (req, res) => {
                     httpOnly: true,
                     sameSite: 'none',
                     secure: true,
-                    
+
                 }).json({
                     success: true,
                     message: "Player Logged In Successfully",
@@ -132,29 +137,17 @@ playerRoutes.post('/playerLogin', async (req, res) => {
     }
 });
 
-playerRoutes.get('/myProfile', async (req, res) => {
+playerRoutes.get('/myProfile/:playerID', async (req, res) => {
     try {
 
-
-        if (!req.cookies.paaiTokenPlayer) {
-            const token = req.cookies.paaiTokenPlayer;
-            console.log("token", token);
-            res.json({
-                success: false,
-                message: "Player Not Logged In Please Login new wala",
-                token
-            });
-        }
-        else {
-            const playerID = jwt.verify(token, process.env.JWT_SECRET);
-            const playerData = await PlayerModel.findOne({ _id: playerID })
-            res.json({
-                success: true,
-                message: "Player Profile",
-                playerData,
-                token
-            });
-        }
+        const playerID = req.params.playerID;
+        console.log("plid", playerID);
+        const playerData = await PlayerModel.findOne({ _id: playerID })
+        res.json({
+            success: true,
+            message: "Player Profile",
+            playerData,
+        });
     } catch (error) {
         res.json({
             success: false,
