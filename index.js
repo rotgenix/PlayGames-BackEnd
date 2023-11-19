@@ -35,25 +35,22 @@ app.use(tournamentRoutes);
 //DB Connection
 ConnectDB();
 
-
-// console.log("node enc", process.env.NODE_ENV);
-app.get('/isLoggedIn', (req, res) => {
-
-    console.log(req.cookies);
-
-    if (req.cookies.paaiTokenPlayer) {
+app.get('/', (req, res) => {
+    const token = req.cookies.paaiTokenPlayer;
+    console.log("token", token);
+    if (token) {
         res.json({
-            success: true,
-            isLoggedin: true,
-            message: "Logged In as Player",
-        });
+            message: "User",
+            tokenis: true,
+        })
     }
     else {
         res.json({
-            success: false,
-            message: "Not Logged",
+            message: "User",
+            tokenis: false,
         })
     }
+
 });
 
 app.listen(process.env.PORT, () => {

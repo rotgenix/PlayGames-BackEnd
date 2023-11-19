@@ -84,7 +84,6 @@ tournamentRoutes.get('/getAllTournaments', async (req, res) => {
             tokenis: true,
         })
     }
-
     else {
         res.json({
             success: true,
@@ -93,12 +92,7 @@ tournamentRoutes.get('/getAllTournaments', async (req, res) => {
             tokenis: false,
         })
     }
-    res.json({
-        success: true,
-        message: "All Tournaments fetched Successfully",
-        allTournaments,
-        token,
-    })
+
 });
 
 tournamentRoutes.post('/tournamentregister/:tournamentID', async (req, res) => {

@@ -6,23 +6,32 @@ import jwt from 'jsonwebtoken';
 
 export const playerRoutes = expres.Router();
 
-playerRoutes.get('/', (req, res) => {
-    const token = req.cookies.paaiTokenPlayer;
-    console.log("token", token);
-    if (token) {
-        res.json({
-            message: "User",
-            tokenis: true,
-        })
-    }
-    else {
-        res.json({
-            message: "User",
-            tokenis: false,
-        })
-    }
+// console.log("node enc", process.env.NODE_ENV);
+playerRoutes.get('/isLoggedIn', (req, res) => {
 
+    try {
+        if (req.cookies.paaiTokenPlayer) {
+            console.log(req.cookies);
+            console.log("/isLoggedIn", req.cookies);
+            res.json({
+                success: true,
+                message: "Logged In as Player",
+            });
+        }
+        else {
+            res.json({
+                success: false,
+                message: "Not Logged",
+            })
+        }
+    } catch (error) {
+        res.json({
+            success: false,
+            message: "Server error while checking is logged in",
+        });
+    }
 });
+
 
 playerRoutes.post('/playerRegister', async (req, res) => {
     try {
@@ -37,6 +46,7 @@ playerRoutes.post('/playerRegister', async (req, res) => {
         }
         else {
             const encryptedPassword = await bcrypt.hash(password, 10);
+
             console.log("Enc Pass ", encryptedPassword);
 
             let createdPlayer = await PlayerModel.create({
@@ -69,6 +79,7 @@ playerRoutes.post('/playerRegister', async (req, res) => {
 playerRoutes.post('/playerLogin', async (req, res) => {
     try {
         const data = req.cookies.paaiTokenPlayer;
+        console.log("/playerLogin", data);
         if (data) {
             res.json({
                 success: false,
@@ -121,14 +132,12 @@ playerRoutes.post('/playerLogin', async (req, res) => {
 
 playerRoutes.get('/myProfile', async (req, res) => {
     try {
-        const token = req.cookies.paaiTokenPlayer;
-        console.log("token", token);
-
         if (!req.cookies.paaiTokenPlayer) {
+            const token = req.cookies.paaiTokenPlayer;
+            console.log("token", token);
             res.json({
                 success: false,
-                message: "Player Not Logged In Please Login new wala",
-                token
+                message: "Player Not Logged In Please Login",
             });
         }
         else {
@@ -136,9 +145,8 @@ playerRoutes.get('/myProfile', async (req, res) => {
             const playerData = await PlayerModel.findOne({ _id: playerID })
             res.json({
                 success: true,
-                message: "Player Profile new wala",
+                message: "Player Profile",
                 playerData,
-                token
             });
         }
     } catch (error) {
