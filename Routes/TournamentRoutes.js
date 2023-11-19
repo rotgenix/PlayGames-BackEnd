@@ -73,12 +73,31 @@ tournamentRoutes.post('/createTournament', async (req, res) => {
 
 tournamentRoutes.get('/getAllTournaments', async (req, res) => {
 
+    const token = req.cookies.paaiTokenPlayer;
     const allTournaments = await TournamentModel.find({});
 
+    if (token) {
+        res.json({
+            success: true,
+            message: "All Tournaments fetched Successfully",
+            allTournaments,
+            tokenis: true,
+        })
+    }
+
+    else {
+        res.json({
+            success: true,
+            message: "All Tournaments fetched Successfully",
+            allTournaments,
+            tokenis: false,
+        })
+    }
     res.json({
         success: true,
         message: "All Tournaments fetched Successfully",
         allTournaments,
+        token,
     })
 });
 
