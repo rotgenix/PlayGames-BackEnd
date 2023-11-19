@@ -4,9 +4,6 @@ import { PlayerModel } from '../Database/Models/Models.js';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';
 
-// console.log("node enc", process.env.NODE_ENV);
-// console.log("con", process.env.NODE_ENV === 'Development' ? 'true' : 'false');
-
 export const playerRoutes = expres.Router();
 
 playerRoutes.get('/', (req, res) => {
@@ -71,7 +68,6 @@ playerRoutes.post('/playerLogin', async (req, res) => {
 
         let findPlayer = await PlayerModel.findOne({ email });
 
-
         if (!findPlayer) {
             res.json({
                 success: false,
@@ -97,12 +93,10 @@ playerRoutes.post('/playerLogin', async (req, res) => {
                 })
             }
             else {
-
                 res.json({
                     success: false,
                     message: "Incorrect Credentials",
                 })
-
             }
         }
     } catch (error) {
@@ -115,12 +109,13 @@ playerRoutes.post('/playerLogin', async (req, res) => {
 
 playerRoutes.get('/myProfile', async (req, res) => {
     const token = req.cookies.paaiTokenPlayer;
-    console.log("token", token)
-    //changed here
+    console.log("token", token);
+
     if (!req.cookies.paaiTokenPlayer) {
         res.json({
             success: false,
             message: "Player Not Logged In Please Login",
+            token
         });
     }
     else {
@@ -130,6 +125,7 @@ playerRoutes.get('/myProfile', async (req, res) => {
             success: true,
             message: "Player Profile",
             playerData,
+            token
         });
     }
 });
