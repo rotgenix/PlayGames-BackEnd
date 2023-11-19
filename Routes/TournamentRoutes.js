@@ -97,6 +97,7 @@ tournamentRoutes.get('/getAllTournaments', async (req, res) => {
 
 tournamentRoutes.post('/tournamentregister/:tournamentID', async (req, res) => {
     try {
+        console.log("reg for tou");
         const data = req.body;
         const { tournamentID } = req.params;
 
@@ -105,17 +106,17 @@ tournamentRoutes.post('/tournamentregister/:tournamentID', async (req, res) => {
                 participatingTeams: data
             }
         });
-        // console.log("ta", teamAdded);
-        const tournamentData = await TournamentModel.findById(tournamentID);
-        // console.log("db td ", tournamentData);
+
+        let tournamentData = await TournamentModel.findById(tournamentID);
 
         const participatingTeams = tournamentData.participatingTeams;
-        // console.log("pt ", participatingTeams);
 
         res.json({
             success: true,
             message: "Team registered Successfully!",
-        })
+            participatingTeams
+        });
+
     } catch (error) {
         res.json({
             success: false,
