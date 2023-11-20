@@ -142,21 +142,29 @@ playerRoutes.get('/myProfile/:playerID', async (req, res) => {
         const playerID = req.params.playerID;
 
         const playerData = await PlayerModel.findOne({ _id: playerID });
-        // console.log("player data", playerData);
-        // console.log("tourna parti data", playerData.participatedTournaments);
 
-        let participatedTournamentsArray = playerData.participatedTournaments;
+        console.log("Player Profile", playerData);
+        res.json({
+            success: true,
+            message: "Profile",
+            playerData
+        })
 
-        // console.log("array", participatedTournamentsArray);
+        // let participatedTournamentsArray = playerData.participatedTournaments;
+
+        // // console.log("Participating Tournas", participatedTournamentsArray);
+
         // if (participatedTournamentsArray.length != 0) {
         //     let profileResponseTournament = [];
+        //     const obj = {};
 
         //     const pushTournaments = async () => {
-        //         participatedTournamentsArray.map(async (value, index) => {
-        //             // profileResponseTournament.push(value);
-        //             let tournamentData = await TournamentModel.findById({ _id: value });
 
-        //             const obj = {};
+        //         participatedTournamentsArray.map(async (value, index) => {
+
+        //             let tournamentData = await TournamentModel.findById({ _id: value });
+        //             console.log("tournamentdata", tournamentData);
+
 
         //             obj.tournamentName = tournamentData.tournamentName;
         //             obj.tournamentDate = tournamentData.tournamentDate;
@@ -164,28 +172,29 @@ playerRoutes.get('/myProfile/:playerID', async (req, res) => {
         //             obj.gameName = tournamentData.gameName;
 
         //             console.log("obj", obj);
-        //             profileResponseTournament.push(tournamentData);
+        //             profileResponseTournament.push(obj);
+
         //             // console.log("profile data", profileResponseTournament)
         //         })
-
         //     }
 
-        //     await pushTournaments();
+        //     pushTournaments();
         //     console.log("profile data last", profileResponseTournament);
         //     // console.log("179")
 
-            res.json({
-                success: true,
-                message: "Player Profile",
-                playerData,
-            });
+        //     res.json({
+        //         success: true,
+        //         message: "Player Profile",
+        //         profileResponseTournament,
+        //         obj
+        //     });
         // }
         // else {
         //     res.json({
         //         success: true,
         //         message: "Player Profile",
         //         playerData,
-        //         profileResponseTournament: [],
+        //         participatedTournamentsArray: [],
         //     });
         // }
 

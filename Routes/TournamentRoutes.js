@@ -119,10 +119,24 @@ tournamentRoutes.post('/tournamentregister/:tournamentID', async (req, res) => {
             }
         });
 
+        const tournamentData2 = await TournamentModel.findById({ _id: tournamentID });
+        // console.log("td2", tournamentData2.tournamentName)
+        // console.log("td2", tournamentData2.tournamentDate)
+        // console.log("td2", tournamentData2.tournamentTime)
+        // console.log("td2", tournamentData2..gameName)
+        console.log(teamAdded);
+        const obj = {
+            tournamentName: tournamentData2.tournamentName,
+            tournamentDate: tournamentData2.tournamentDate,
+            tournamentTime: tournamentData2.tournamentTime,
+            gameName: tournamentData2.gameName
+        }
+        console.log(obj);
+
         //Adding tournament in player profile
         let playerData = await PlayerModel.updateOne({ _id: playerID }, {
             $push: {
-                participatedTournaments: tournamentID
+                participatedTournaments: obj
             }
         });
 
