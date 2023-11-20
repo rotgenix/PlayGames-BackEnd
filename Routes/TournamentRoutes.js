@@ -1,4 +1,4 @@
-import expres from 'express'
+import expres, { json } from 'express'
 import { PlayerModel, TournamentModel } from '../Database/Models/Models.js';
 
 export const tournamentRoutes = expres.Router();
@@ -144,6 +144,23 @@ tournamentRoutes.post('/tournamentregister/:tournamentID', async (req, res) => {
         })
     }
 });
+
+tournamentRoutes.get('/tournament/:tournamentID', async (req, res) => {
+    const tournamentID = req.params.tournamentID;
+    const data = await TournamentModel.findById({ _id: tournamentID });
+    if (data) {
+        res.json({
+            success: true,
+            data
+        })
+    }
+    else {
+        res, json({
+            success: false,
+            message: "Tournament not found"
+        })
+    }
+})
 
 tournamentRoutes.get('/tournaments/mytournaments/:username', async (req, res) => {
     const username = req.params.username;
