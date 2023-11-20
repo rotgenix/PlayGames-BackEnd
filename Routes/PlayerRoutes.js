@@ -147,7 +147,8 @@ playerRoutes.get('/myProfile/:playerID', async (req, res) => {
         res.json({
             success: true,
             message: "Profile",
-            participatedTournaments: playerData.participatedTournaments
+            participatedTournaments: playerData.participatedTournaments,
+            playerData
         })
 
         // let participatedTournamentsArray = playerData.participatedTournaments;
