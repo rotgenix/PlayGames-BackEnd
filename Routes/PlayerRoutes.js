@@ -143,11 +143,11 @@ playerRoutes.get('/myProfile/:playerID', async (req, res) => {
 
         const playerData = await PlayerModel.findOne({ _id: playerID });
 
-        console.log("Player Profile", playerData);
+        console.log("Player Profile", playerData.participatedTournaments);
         res.json({
             success: true,
             message: "Profile",
-            playerData
+            participatedTournaments: playerData.participatedTournaments
         })
 
         // let participatedTournamentsArray = playerData.participatedTournaments;
