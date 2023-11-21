@@ -13,8 +13,5 @@ export const OrganiserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    createdTournaments: {
-        type: Array,
-    }
 })
 
