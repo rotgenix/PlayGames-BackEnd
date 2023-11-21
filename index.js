@@ -18,7 +18,7 @@ const app = express();
 console.log("FRONT URL ", process.env.FRONT_URL);
 
 app.use(cors({
-    origin: [process.env.FRONT_URL],
+    origin: [process.env.FRONT_URL_PLAYER, process.env.FRONT_URL_DASHBOARD],
     methods: ["GET", "PUT", "DELETE", "POST"],
     credentials: true,
 }));
