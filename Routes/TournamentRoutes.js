@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 export const tournamentRoutes = expres.Router();
 
 //complete
-tournamentRoutes.post('/tournament/createTournament', async (req, res) => {
+tournamentRoutes.post('/tournament/createTournament/:adminID', async (req, res) => {
     const {
         tournamentName,
         prizePool,
@@ -58,18 +58,18 @@ tournamentRoutes.post('/tournament/createTournament', async (req, res) => {
     console.log("tourna details", tournamentName, prizePool, tournamentDate, tournamentTime, gameName);
 
 
-    //accessing cookie
-    const data = req.cookies.paaiTokenOrganiser;
-    console.log("token", data);
+    //accessing params
+    const data = req.params;;
+    console.log("params", data);
 
     //organiser id
-    const adminID = jwt.verify(data, process.env.JWT_SECRET);
-    console.log("admin id", adminID);
+    // const adminID = jwt.verify(data, process.env.JWT_SECRET);
+    // console.log("admin id", adminID);
 
     //creating tournament
     const createdTournament = await TournamentModel.create({
         imgaddress,
-        createdBy: adminID,
+        createdBy: "adminID",
         tournamentName,
         prizePool,
         tournamentDate,
@@ -174,7 +174,7 @@ tournamentRoutes.post('/tournamentregister/:tournamentID', async (req, res) => {
     }
 });
 
-
+//Complete
 tournamentRoutes.get('/tournament/getAllTournament/:adminID', async (req, res) => {
     const adminID = req.params.adminID;
     console.log("admin id", adminID);
