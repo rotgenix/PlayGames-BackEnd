@@ -103,12 +103,10 @@ playerRoutes.post('/playerLogin', async (req, res) => {
         }
         else {
 
-            const paaiTokenPlayer = jwt.sign({ _id: findPlayer._id }, process.env.JWT_SECRET);
-
-
             const isMatch = await bcrypt.compare(password, findPlayer.password);
 
             if (isMatch) {
+                const paaiTokenPlayer = jwt.sign({ _id: findPlayer._id }, process.env.JWT_SECRET);
                 res.cookie("paaiTokenPlayer", paaiTokenPlayer, {
                     maxAge: 10 * 60 * 1000,
                     httpOnly: true,

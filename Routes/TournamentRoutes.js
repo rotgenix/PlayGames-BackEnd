@@ -1,9 +1,11 @@
 import expres, { json } from 'express'
 import { PlayerModel, TournamentModel } from '../Database/Models/Models.js';
 
+import jwt from 'jsonwebtoken';
 export const tournamentRoutes = expres.Router();
 
-tournamentRoutes.post('/createTournament', async (req, res) => {
+//complete
+tournamentRoutes.post('/tournament/createTournament', async (req, res) => {
     const {
         tournamentName,
         prizePool,
@@ -12,6 +14,8 @@ tournamentRoutes.post('/createTournament', async (req, res) => {
         gameName,
     } = req.body;
     let imgaddress = '';
+
+
 
     if (gameName === 'bgmi') {
         imgaddress = 'https://wallpapers.com/images/high/bgmi-cyberpunk-street-cxapqv3ux77orya3.webp';
@@ -50,19 +54,28 @@ tournamentRoutes.post('/createTournament', async (req, res) => {
         // console.log(imgaddress);
     }
 
+
+    console.log("tourna details", tournamentName, prizePool, tournamentDate, tournamentTime, gameName);
+
+
+    //accessing cookie
+    const data = req.cookies.paaiTokenOrganiser;
+    console.log("token", data);
+
+    //organiser id
+    const adminID = jwt.verify(data, process.env.JWT_SECRET);
+    console.log("admin id", adminID);
+
+    //creating tournament
     const createdTournament = await TournamentModel.create({
+        imgaddress,
+        createdBy: adminID,
         tournamentName,
         prizePool,
         tournamentDate,
-        gameName,
         tournamentTime,
-        organiserName: "Paai esports",
-        createdBy: 'paaiesports',
-        imgaddress
-
+        gameName,
     });
-
-    console.log(tournamentName, prizePool, tournamentDate, gameName, tournamentTime);
 
     res.json({
         success: true,
@@ -71,6 +84,7 @@ tournamentRoutes.post('/createTournament', async (req, res) => {
     })
 });
 
+//Complete
 tournamentRoutes.get('/getAllTournaments', async (req, res) => {
 
     const token = req.cookies.paaiTokenPlayer;
@@ -95,6 +109,7 @@ tournamentRoutes.get('/getAllTournaments', async (req, res) => {
 
 });
 
+//complete
 tournamentRoutes.post('/tournamentregister/:tournamentID', async (req, res) => {
     try {
 
@@ -159,19 +174,25 @@ tournamentRoutes.post('/tournamentregister/:tournamentID', async (req, res) => {
     }
 });
 
-tournamentRoutes.get('/tournament/:tournamentID', async (req, res) => {
-    const tournamentID = req.params.tournamentID;
-    const data = await TournamentModel.findById({ _id: tournamentID });
+
+tournamentRoutes.get('/tournament/getAllTournament/:adminID', async (req, res) => {
+    const adminID = req.params.adminID;
+    console.log("admin id", adminID);
+    const data = await TournamentModel.find({ createdBy: adminID });
+
+    console.log("data", data);
+
     if (data) {
         res.json({
             success: true,
+            message: "Admin Tournaments fetched Successfully",
             data
         })
     }
     else {
         res, json({
             success: false,
-            message: "Tournament not found"
+            message: "Tournaments not found"
         })
     }
 })

@@ -1,10 +1,6 @@
 import mongoose from 'mongoose'
 
 export const OrganiserSchema = new mongoose.Schema({
-    username: {
-        type: String,
-        required: true,
-    },
     organisationName: {
         type: String,
         required: true,

@@ -9,10 +9,6 @@ export const TournamentSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    organiserName: {
-        type: String,
-        required: true,
-    },
     tournamentName: {
         type: String,
         required: true,
