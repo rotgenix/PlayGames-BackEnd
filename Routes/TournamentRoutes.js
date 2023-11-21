@@ -4,7 +4,7 @@ import { PlayerModel, TournamentModel } from '../Database/Models/Models.js';
 import jwt from 'jsonwebtoken';
 export const tournamentRoutes = expres.Router();
 
-//complete
+//complete createtournamnet
 tournamentRoutes.post('/tournament/createTournament/:adminID', async (req, res) => {
     const {
         tournamentName,
@@ -84,7 +84,7 @@ tournamentRoutes.post('/tournament/createTournament/:adminID', async (req, res) 
     })
 });
 
-//Complete
+//Complete all tournas for player
 tournamentRoutes.get('/getAllTournaments', async (req, res) => {
 
     const token = req.cookies.paaiTokenPlayer;
@@ -109,7 +109,7 @@ tournamentRoutes.get('/getAllTournaments', async (req, res) => {
 
 });
 
-//complete
+//complete teams register in tourna
 tournamentRoutes.post('/tournamentregister/:tournamentID', async (req, res) => {
     try {
 
@@ -174,7 +174,7 @@ tournamentRoutes.post('/tournamentregister/:tournamentID', async (req, res) => {
     }
 });
 
-//Complete
+//Complete get all tournas for admin
 tournamentRoutes.get('/tournament/getAllTournament/:adminID', async (req, res) => {
     const adminID = req.params.adminID;
     console.log("admin id", adminID);
@@ -211,24 +211,26 @@ tournamentRoutes.get('/tournaments/mytournaments/:username', async (req, res) =>
     })
 });
 
-tournamentRoutes.get('/tournaments/teams/:tournamentID', async (req, res) => {
+tournamentRoutes.get('/tournaments/registeredteams/:tournamentID', async (req, res) => {
     const tournamentID = req.params.tournamentID;
-
     console.log("tourna id", tournamentID);
-    const tournamentsTeam = await TournamentModel.find({ _id: tournamentID });
-    console.log("Tour teams", tournamentsTeam);
 
+    const data = await TournamentModel.findOne({ _id: tournamentID });
+
+    console.log("Tour teams", data.participatingTeams);
+    const tournamentRegisteredTeams = data.participatingTeams;
     res.json({
         success: true,
         message: "Tournaments teams fetched Successfully",
-        tournamentsTeam
+        tournamentRegisteredTeams
     })
 });
 
+//complete delete tournmanet
 tournamentRoutes.get('/tournaments/deletetournament/:tournamentID', async (req, res) => {
     const tournamentID = req.params.tournamentID;
+    // console.log("tourna id", tournamentID);
 
-    console.log("tourna id", tournamentID);
     const deleteTournament = await TournamentModel.deleteOne({ _id: tournamentID });
     console.log("Tour teams", deleteTournament);
 
