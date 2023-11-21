@@ -6,14 +6,14 @@ import jwt from 'jsonwebtoken';
 import bcrypt from "bcrypt"
 
 organiserRoutes.get('/organiser', async (req, res) => {
-    const data = req.cookies.paaiOrganiserToken;
+    const data = req.cookies.paaiTokenOrganiser;
     console.log("isloggedin cookie data", data);
 
     if (data) {
-        const adminID = jwt.verify(data.paaiOrganiserToken, process.env.JWT_SECRET);
+        const adminID = jwt.verify(data, process.env.JWT_SECRET);
         console.log("admin id", adminID);
 
-        const adminData = await OrganiserModel.findById({ _id: adminID });
+        const adminData = await OrganiserModel.find({ _id: adminID });
 
         console.log("admin data", adminData);
         res.json({
@@ -75,7 +75,6 @@ organiserRoutes.post('/organiser/register', async (req, res) => {
 
         console.log("paaiTokenOrganiser", paaiTokenOrganiser);
         res
-
             .cookie("paaiTokenOrganiser", paaiTokenOrganiser, {
                 maxAge: 10 * 60 * 1000,
                 httpOnly: true,
