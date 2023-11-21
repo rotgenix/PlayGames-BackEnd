@@ -59,8 +59,8 @@ tournamentRoutes.post('/tournament/createTournament/:adminID', async (req, res) 
 
 
     //accessing params
-    const data = req.params;;
-    console.log("params", data);
+    const { adminID } = req.params;;
+    console.log("params", adminID);
 
     //organiser id
     // const adminID = jwt.verify(data, process.env.JWT_SECRET);
@@ -69,7 +69,7 @@ tournamentRoutes.post('/tournament/createTournament/:adminID', async (req, res) 
     //creating tournament
     const createdTournament = await TournamentModel.create({
         imgaddress,
-        createdBy: "adminID",
+        createdBy: adminID,
         tournamentName,
         prizePool,
         tournamentDate,

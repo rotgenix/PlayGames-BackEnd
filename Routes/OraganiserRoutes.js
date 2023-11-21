@@ -125,7 +125,6 @@ organiserRoutes.post('/organiser/login', async (req, res) => {
 
         console.log("ismatch", isMatch);
 
-
         if (isMatch) {
             console.log("inside is match")
             const paaiTokenOrganiser = jwt.sign({ _id: organiser._id }, process.env.JWT_SECRET);
