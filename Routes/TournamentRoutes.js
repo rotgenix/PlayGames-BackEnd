@@ -31,20 +31,20 @@ tournamentRoutes.get('/tournament/getAllTournament/:adminID', getAllAdminTournam
 //     })
 // });
 
-// tournamentRoutes.get('/tournaments/registeredteams/:tournamentID', async (req, res) => {
-//     const tournamentID = req.params.tournamentID;
-//     console.log("tourna id", tournamentID);
+tournamentRoutes.get('/tournaments/registeredteams/:tournamentID', async (req, res) => {
+    const tournamentID = req.params.tournamentID;
+    console.log("tourna id", tournamentID);
 
-//     const data = await TournamentModel.findOne({ _id: tournamentID });
+    const data = await TournamentModel.findOne({ _id: tournamentID });
 
-//     console.log("Tour teams", data.participatingTeams);
-//     const tournamentRegisteredTeams = data.participatingTeams;
-//     res.json({
-//         success: true,
-//         message: "Tournaments teams fetched Successfully",
-//         tournamentRegisteredTeams
-//     })
-// });
+    console.log("Tour teams", data.participatingTeams);
+    const tournamentRegisteredTeams = data.participatingTeams;
+    res.json({
+        success: true,
+        message: "Tournaments teams fetched Successfully",
+        tournamentRegisteredTeams
+    })
+});
 
 //complete delete tournmanet
 tournamentRoutes.get('/tournaments/deletetournament/:tournamentID', deleteTournamentController);
