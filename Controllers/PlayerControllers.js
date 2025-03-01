@@ -69,6 +69,7 @@ export const playerRegisterController = async (req, res) => {
                 })
         }
     } catch (error) {
+        console.log("Error", error)
         res.json({
             success: false,
             message: "Server Error while Registering! Please Try Again.",

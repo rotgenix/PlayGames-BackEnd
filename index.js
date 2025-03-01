@@ -10,7 +10,7 @@ import { tournamentRoutes } from './Routes/TournamentRoutes.js';
 import { ConnectDB } from './Database/ConnectDB.js';
 
 config({
-    path: './Dotenv/config.env'
+    path: './.env'
 });
 
 const app = express();
